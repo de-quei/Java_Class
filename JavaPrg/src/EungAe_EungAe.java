@@ -1,48 +1,21 @@
 package Project_2022;
 //디폴트메뉴 파일처리 하기, 디비 연동하기, 메뉴의 다양성 증가, Q&A기능, 게시판 ..등
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
- 
-class LoginProgram {
-    private String id;
-    private String password;
-    private String name;
-    private String tel;
-    static boolean LoginFlag = false;
-    HashMap<String,String> memberTable = new HashMap<String,String>();//DB대신 ..
-    HashMap<String,String> memberTable2 = new HashMap<String,String>();
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getId() {
-        return id;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-    public String getTel() {
-        return tel;
-    }
-    
-    //메뉴 출력 메소드
-    public char display() {
-    	System.out.println();
+
+
+public class Project_1108 {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		System.out.println();
 		System.out.println("        UU  UU                          AAAAA          ");
 		System.out.println("EEEEE   UU  UU   NN   NN               AA   AA    EEEEE");
 		System.out.println("EE      UU  UU   NNN  NN   GGGGGG      AAAAAAA    EE   ");
-		System.out.println("EEEEE   UU  UU   NN N NN   GG      ★   AA   AA    EEEEE");
+		System.out.println("EEEEE   UU  UU   NN N NN   GG      ★  AA   AA    EEEEE");
 		System.out.println("EE       UUUU    NN  NNN   GG GGG      AA   AA    EE   ");
 		System.out.println("EEEEE            NN   NN   GG  GG                 EEEEE");
 		System.out.println("                           GGGGGG                      ");
@@ -50,7 +23,7 @@ class LoginProgram {
 		System.out.println();
 		System.out.println("           EEEEE                      GGGGGG                      ");
 		System.out.println("           EE      UU  UU             GG                     EEEEE");
-		System.out.println("           EEEEE   UU  UU   NN   NN   GG GGG   ★   AAAAA     EE   ");
+		System.out.println("           EEEEE   UU  UU   NN   NN   GG GGG   ★  AAAAA     EE   ");
 		System.out.println("           EE      UU  UU   NNN  NN   GG  GG      AA   AA    EEEEE");
 		System.out.println("           EEEEE   UU  UU   NN N NN   GGGGGG      AAAAAAA    EE   ");
 		System.out.println("                    UUUU    NN  NNN               AA   AA    EEEEE");
@@ -66,97 +39,15 @@ class LoginProgram {
     	System.out.println("     6. 지역 별 문의처 전화번호");
     	System.out.println("     7. 종료");
     	System.out.print("     >>>");
-    	return input().charAt(0);
-    }
-    
-    
-    //입력 메소드
-    public String input() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
-    }
-
-    //회원가입 메소드
-    public void Join() {
-        if (LoginFlag) {
-            System.out.println("     자동로그아웃하고 새로운 회원가입을 시작합니다.");
-            LoginFlag = false;
-        }
-        while(true) {
-            System.out.print("     가입 id : ");
-            String newId = input();
-            if(memberTable.containsKey(newId)) {
-                System.out.println("     이미 존재하는 아이디 입니다.");
-                continue;
-            }
-            System.out.print("     가입 pw : ");
-            String newPwd = input();
-            memberTable.put(newId, newPwd);
-            System.out.print("     가입 이름 : ");
-            String newName = input();
-            System.out.print("     가입 전화번호 : ");
-            String newTel = input();
-            if(memberTable.containsKey(newTel)) {
-            	System.out.println("     이미 존재하는 전화번호 입니다.");
-            	continue;
-            }
-            memberTable2.put(newName, newTel);
-            break;
-        }
-        System.out.println("     저장 완료");
-    }
-    //로그인 메소드
-    public void LoginVaild() {
-        if (LoginFlag) {
-            System.out.println("     이미 로그인되어 있는 상태입니다.");
-            return;
-        }
-    }    
-        
-        
-    public void MemberCheck(String id, String pw) {    
-        if (memberTable.containsKey(id)) {
-            if (!memberTable.get(id).equals(pw)) {
-                System.out.println("     비밀번호가 맞지 않습니다. 인증 실패");
-            } else {
-                System.out.println("     인증 성공");
-                LoginFlag = true;
-            }
-        } else {
-            System.out.println("     존재하지 않는 아이디 입니다.");
-        }
-    }
-    
-    //로그아웃 메소드
-    public void logout() {
-        if (!LoginFlag) {
-            System.out.println("     먼저 사용자 로그인이 필요합니다.");
-            return;
-        }
-        System.out.println("     로그아웃 합니다.");
-        LoginFlag = false;
-    }
-}
-public class EungAe_EungAe{
-	public static void main(String args[]){
-		Scanner sc = new Scanner(System.in);
-		LoginProgram Program = new LoginProgram();
-		
-		
-		
-		while(true) {
-			char select = Program.display();
+    	int select = sc.nextInt();
 			
 			switch(select) {
-			case '1':
-				System.out.println("    --------------------------------------------------------------------------------");
-				System.out.println("    ㅣ <응애응애>는 임신/출산/육아 생애 주기 별, 필요한 의료/경제/사회복지 서비스를 안내해주는 서비스입니다. ㅣ");
-				System.out.println("    | 저희 안내 서비스는 거주지 기준 관할 보건소를 바탕으로 제공합니다.                             |");
-				System.out.println("    | 지역 별 전화번호 메뉴를 반드시 참고하여 주세요!!                                         |");
-				System.out.println("    --------------------------------------------------------------------------------");
+			case 1:
+				System.out.println("    <응애응애>는 임신/출산/육아 생애 주기 별, 필요한 의료/경제/사회복지 서비스를 안내해주는 서비스입니다.");;
+				System.out.println("    저희 안내 서비스는 거주지 기준 관할 보건소를 바탕으로 제공합니다.");
+				System.out.println("    지역 별 전화번호 메뉴를 반드시 참고하여 주세요!!");
 				break;
-			case '2':
-				if(LoginProgram.LoginFlag == true) {
+			case 2:
 					System.out.println("    현재 생애 주기를 선택하여 주십시오.");
 					System.out.println("    1. 임신 / 2. 출산 / 3. 육아");
 					System.out.print("    >>>");
@@ -172,7 +63,7 @@ public class EungAe_EungAe{
 							System.out.println("    <1. 임신 및 출산 의료비 지원>");
 							System.out.println("    - 임신 바우처 기존 60만원 -> 100만원으로 인상");
 							System.out.println("    - 다자녀: 140만원 / 청소년 산모: 120만원 지원 가능");
-							
+							break;
 						}else if(Menu_num2 == 2) {
 							System.out.println();
 							System.out.println("    <1. 엽산, 철분제 지원>");
@@ -193,10 +84,12 @@ public class EungAe_EungAe{
 							System.out.println("    -      동결배아 체외수정 회당 30~100만원");
 							System.out.println("    - 신청: 부인의 주민등록 상 주소지의 관할 보건소");
 							System.out.println("    - 유의: 소득기준없이 모든 난임부부에게 지원되나, 소득수준에 따라 '차등지급'함.");
+							break;
 						}else if(Menu_num2 == 3) {
 							System.out.println("    <1. 출산 교실과 용품 지원>");
 							System.out.println("    - 내용: 아이용품 만들기, 산후우울증 극복, 성공적인 모유수유, 순산체도, 다양한 임신/출산 교육 프로그램 제공");
 							System.out.println("    - 신청: 관할 보건소 문의 (운영기간 및 신청일 정보 수집)");
+							break;
 						}
 					}else if(Menu_num1 == 2) {
 						if(Menu_num2 == 1) {
@@ -208,12 +101,15 @@ public class EungAe_EungAe{
 							System.out.println("    <2. 출산 축하금>");
 							System.out.println("    - 2022년부터 출산 축하금으로 200만원 일시 지원");
 							System.out.println("    - 지차체 별개로 국가에서 지급");
+							break;
 						}else if(Menu_num2 == 2) {
 							System.out.println();
 							System.out.println("    ※ 데이터가 부족합니다! ※");
+							break;
 						}else if(Menu_num2 == 3) {
 							System.out.println();
 							System.out.println("    ※ 데이터가 부족합니다! ※");
+							break;
 						}
 					}else if(Menu_num1 == 3) {
 						if(Menu_num2 == 1) {
@@ -230,9 +126,11 @@ public class EungAe_EungAe{
 							System.out.println("    <3. 아빠 육아휴직 보너스제>");
 							System.out.println("    - 조건: 부모가 차례로 같은 자녀에 대해 휴직을 사용하는 경우");
 							System.out.println("    - 내용: 사용한 사람에게 첫 3개월까지 통상임금의 100%(상한액 월 250만원)지급");
+							break;
 						}else if(Menu_num2 == 2) {
 							System.out.println();
 							System.out.println("    ※ 데이터가 부족합니다! ※");
+							break;
 						}else if(Menu_num2 == 3) {
 							System.out.println();
 							System.out.println("    <1. 육아휴직 급여>");
@@ -243,39 +141,80 @@ public class EungAe_EungAe{
 							System.out.println("    - 조건: 생후 12개월 이하의 자녀를 둔 부모가 육아휴직을 사용할 때, 사용가능");
 							System.out.println("    - 내용: 첫 3개월 동안 육아휴직 급여를 100% 수령 가능");
 							System.out.println("    - 첫 달: 200만원 / 두 번째 달: 250만원 / 세 번째 달: 300만원");
-					
+							break;
 						}
-					}
 					break;
 				}
-				else {
-					System.out.println("    먼저 사용자 로그인을 해주시기 바랍니다.");
-					break;
-				}
-			case '3':
-				Program.Join();
+			case 3:{
+				join();
 				break;
-			case '4':
-				Program.LoginVaild();
-				if(LoginProgram.LoginFlag) {
-					break;
-				}
-				System.out.print("     아이디 입력 : ");
-				String myId = sc.nextLine();
-				Program.setId(myId);
-				System.out.print("     비밀번호 입력 : ");
-				String myPw = sc.nextLine();
-				Program.setPassword(myPw);
-				Program.MemberCheck(Program.getId(), Program.getPassword());
-				break;
-			case '5' :
-				Program.logout();
-			case '6':
-			case '7' :
-				System.exit(0);
+			}
 			}
 			
 		}
-			
+	public static void join() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("가입 아이디 입력 : ");
+		String id = sc.next();
+		System.out.print("가입 패스워드 입력 : ");
+		String password1 = sc.next();
+		System.out.print("성함 입력 : ");
+		String name = sc.next();
+		System.out.print("전화번호 입력 : ");
+		String tel = sc.next();
+		
+		//1.
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//2.
+		String url = "jdbc:mysql://localhost:3306/eungae_eungae?serverTimezone=UTC";
+		String user = "root";
+		String password = "0000";
+		Connection con = null;
+		
+		try {
+			con = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//3.
+		String sql = " INSERT INTO useraccount "
+				   + " VALUES (?, ?, ?, ?) ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			//3. Query준비
+			pstm = con.prepareStatement(sql);
+			pstm.setString(1,  id);
+			pstm.setString(2,  password1);
+			pstm.setString(3,  name);
+			pstm.setString(4,  tel);
+			//4. Query 실행 및 리턴
+			int res = pstm.executeUpdate();
+			if(res > 0) {
+				System.out.println("입력 성공");
+			} else {
+				System.out.println("입력 실패");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			//5. DB종료
+			try {
+				pstm.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		 //메뉴 출력 메소드
+	   
 	}
 }
