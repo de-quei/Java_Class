@@ -1,29 +1,83 @@
 package Project_2022;
-//디폴트메뉴 파일처리 하기, 디비 연동하기, 메뉴의 다양성 증가, Q&A기능, 게시판 ..등
+//텍스트파일 처리, 텍스트 디비, 회원가입 활용 어떻게 할지 고민
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class Project_1108 {
+class PersonInfo{
+	private int num;
+	private String sex;
+	private String name;
+	private String contents;
+	public PersonInfo(String name, String sex, String contents) {
+		this.name = name;
+		this.sex = sex;
+		this.contents = contents;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getContents() {
+		return contents;
+	}
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
+	public void showInfo() {
+		System.out.printf("%d.  %s\t%s\t", num, name, contents);
+	}
+	public String toString() {
+		String result = String.format("%d.  %s\t%s\t");
+		return result;
+	}
+}
+public class EungAe {
+	static final String rootPath = System.getProperty("user.dir");
+	static final String address = rootPath + "contentsDB.txt";
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		
+		while(true) {
 		System.out.println();
-		System.out.println("        UU  UU                          AAAAA          ");
-		System.out.println("EEEEE   UU  UU   NN   NN               AA   AA    EEEEE");
-		System.out.println("EE      UU  UU   NNN  NN   GGGGGG      AAAAAAA    EE   ");
-		System.out.println("EEEEE   UU  UU   NN N NN   GG      ★  AA   AA    EEEEE");
-		System.out.println("EE       UUUU    NN  NNN   GG GGG      AA   AA    EE   ");
-		System.out.println("EEEEE            NN   NN   GG  GG                 EEEEE");
-		System.out.println("                           GGGGGG                      ");
+		System.out.println("        UU  UU                            AAAAA          ");
+		System.out.println("EEEEE   UU  UU    NN    NN               AA   AA    EEEEE");
+		System.out.println("EE      UU  UU    NNN   NN   GGGGGG      AAAAAAA    EE   ");
+		System.out.println("EEEEE   UU  UU    NN N  NN   GG      ★   AA   AA    EEEEE");
+		System.out.println("EE       UUUU     NN   NNN   GG GGG      AA   AA    EE   ");
+		System.out.println("EEEEE             NN    NN   GG  GG                 EEEEE");
+		System.out.println("                             GGGGGG                      ");
 		
 		System.out.println();
 		System.out.println("           EEEEE                      GGGGGG                      ");
 		System.out.println("           EE      UU  UU             GG                     EEEEE");
-		System.out.println("           EEEEE   UU  UU   NN   NN   GG GGG   ★  AAAAA     EE   ");
+		System.out.println("           EEEEE   UU  UU   NN   NN   GG GGG   ★   AAAAA     EE   ");
 		System.out.println("           EE      UU  UU   NNN  NN   GG  GG      AA   AA    EEEEE");
 		System.out.println("           EEEEE   UU  UU   NN N NN   GGGGGG      AAAAAAA    EE   ");
 		System.out.println("                    UUUU    NN  NNN               AA   AA    EEEEE");
@@ -36,16 +90,19 @@ public class Project_1108 {
     	System.out.println("     3. 회원가입");
     	System.out.println("     4. 로그인");
     	System.out.println("     5. 로그아웃");
-    	System.out.println("     6. 지역 별 문의처 전화번호");
-    	System.out.println("     7. 종료");
+    	System.out.println("     6. ※게시판※");
+    	System.out.println("     7. 지역 별 문의처 전화번호");
+    	System.out.println("     8. 종료");
     	System.out.print("     >>>");
     	int select = sc.nextInt();
 			
 			switch(select) {
 			case 1:
-				System.out.println("    <응애응애>는 임신/출산/육아 생애 주기 별, 필요한 의료/경제/사회복지 서비스를 안내해주는 서비스입니다.");;
-				System.out.println("    저희 안내 서비스는 거주지 기준 관할 보건소를 바탕으로 제공합니다.");
-				System.out.println("    지역 별 전화번호 메뉴를 반드시 참고하여 주세요!!");
+				System.out.println("    --------------------------------------------------------------------------------");
+				System.out.println("    ㅣ <응애응애>는 임신/출산/육아 생애 주기 별, 필요한 의료/경제/사회복지 서비스를 안내해주는 서비스입니다. ㅣ");
+				System.out.println("    | 저희 안내 서비스는 거주지 기준 관할 보건소를 바탕으로 제공합니다.                             |");
+				System.out.println("    | 지역 별 전화번호 메뉴를 반드시 참고하여 주세요!!                                         |");
+				System.out.println("    --------------------------------------------------------------------------------");
 				break;
 			case 2:
 					System.out.println("    현재 생애 주기를 선택하여 주십시오.");
@@ -149,9 +206,29 @@ public class Project_1108 {
 				join();
 				break;
 			}
+			case 4:{
+				
+			}
+			case 5:{
+				
+			}
+			case 6:{ //게시판 기능 
+				List<PersonInfo> person = new ArrayList<>();
+				readTxt(person); //텍스트 파일 읽기
+				run(person);
+				
+			}
+			case 7:{
+				
+			}
+			case 8:{
+				
+			}
+			
 			}
 			
 		}
+	}
 	public static void join() {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("가입 아이디 입력 : ");
@@ -186,6 +263,7 @@ public class Project_1108 {
 		String sql = " INSERT INTO useraccount "
 				   + " VALUES (?, ?, ?, ?) ";
 		
+		
 		PreparedStatement pstm = null;
 		
 		try {
@@ -198,9 +276,9 @@ public class Project_1108 {
 			//4. Query 실행 및 리턴
 			int res = pstm.executeUpdate();
 			if(res > 0) {
-				System.out.println("입력 성공");
+				System.out.println("가입 성공");
 			} else {
-				System.out.println("입력 실패");
+				System.out.println("가입 실패");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -217,4 +295,145 @@ public class Project_1108 {
 		 //메뉴 출력 메소드
 	   
 	}
-}
+	private static void run(List<PersonInfo> person) {
+		boolean runx = true;
+		int num = 0;
+		String serchstr = "";
+		System.out.println("*******************************");
+		System.out.println("*          게   시   판         *");
+		System.out.println("*******************************");
+		while(runx) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println("1.리스트  2. 등록  3. 삭제  4. 검색  5. 종료");
+			System.out.println("-----------------------------------------");
+			System.out.print("메뉴 번호 >>> ");
+			num = sc.nextInt();
+			
+			switch(num) {
+			case 1:
+				System.out.println();
+				System.out.println("<1. 리스트>");
+				showinfo(person);
+				System.out.println();
+				break;
+			case 2:
+				System.out.println();
+				System.out.println("<2. 등록>");
+				add(sc, person);
+				break;
+			case 3:
+				System.out.println();
+				System.out.println("<3. 삭제>");
+				System.out.print("번호 >>> ");
+				delete(sc, person);
+			case 4:
+				System.out.println();
+				System.out.println("<4. 검색>");
+				System.out.print("이름 >>> ");
+				search(person, serchstr);
+				System.out.println();
+			case 5:
+				System.out.println();
+				System.out.println("*****************************");
+				System.out.println("*          감사합니다          *");
+				System.out.println("*****************************");
+			default:
+				System.out.println("[다시 입력해 주세요]");
+				System.out.println();
+			}
+			
+		}
+	}
+		private static void search(List<PersonInfo> person, String str) {
+			for(int i = 0; i < person.size(); i++) {
+				PersonInfo searchperson = (PersonInfo) person.get(i);
+				if(searchperson.getName().contains(str)) {
+					System.out.println(searchperson.toString());
+				}
+			}
+		}
+		private static void delete(Scanner sc, List<PersonInfo> person) {
+			int del = sc.nextInt();
+			person.remove(del-1);
+			update(person);
+			System.out.println();
+			wirteTxt(person);
+			System.out.println("[삭제되었습니다.]");
+		}
+		private static void showinfo(List<PersonInfo> person) {
+			for(int i = 0; i < person.size(); i++) {
+				System.out.println(person.get(i).toString());
+			}
+		}
+		private static void add(Scanner sc, List<PersonInfo> person) {
+			String name;
+			String sex;
+			String contents;
+			System.out.print(">이름 : ");
+			name = sc.next();
+			System.out.print(">성별 : ");
+			sex = sc.next();
+			System.out.print(">내용 : ");
+			contents = sc.next();
+			person.add(new PersonInfo(name, sex, contents));
+			update(person);
+			System.out.println();
+			wirteTxt(person);
+			System.out.println("[등록되었습니다.]");
+		}
+		private static void update(List<PersonInfo> person) {
+			for(int i = 0; i < person.size(); i++) {
+				PersonInfo n = (PersonInfo) person.get(i);
+				n.setNum(i+1);
+			}
+		}
+		private static List<PersonInfo> readTxt(List<PersonInfo> person){
+			Reader fr = null;
+			BufferedReader br = null;
+			try {
+				fr = new FileReader(address);
+				br = new BufferedReader(fr);
+				String line = "";
+				String[] words = new String[3];
+				while((line = br.readLine()) != null) {
+					words = line.split(",");
+					person.add(new PersonInfo(words[0], words[1], words[2]));
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					br.close();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			update(person);
+			return person;
+		}
+		private static void wirteTxt(List<PersonInfo> person) {
+			Writer fw = null;
+			BufferedWriter bw = null;
+			try {
+				fw = new FileWriter(address);
+				bw = new BufferedWriter(fw);
+				
+				for(int i = 0; i < person.size(); i++) {
+					PersonInfo writeperson = (PersonInfo) person.get(i);
+					bw.write(writeperson.getName() + ",");
+					bw.write(writeperson.getSex()+",");
+					bw.write(writeperson.getContents());
+					bw.write("\r\n");
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					bw.close();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
