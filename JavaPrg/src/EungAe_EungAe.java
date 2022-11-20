@@ -1,18 +1,23 @@
 package Project_2022;
-//텍스트파일 처리, 텍스트 디비, 회원가입 활용 어떻게 할지 고민
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Scanner;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 class PersonInfo{
 	private int num;
@@ -49,21 +54,24 @@ class PersonInfo{
 		this.contents = contents;
 	}
 	public void showInfo() {
-		System.out.printf("%d.  %s\t%s\t", num, name, contents);
+		System.out.printf("%d.  %s\t%s\t%s", num, name, sex, contents);
 	}
+	@Override
 	public String toString() {
-		String result = String.format("%d.  %s\t%s\t");
+		String result = String.format("%d.  %s\t%s\t%s", num, name, sex, contents);
 		return result;
 	}
 }
 public class EungAe {
+	
 	static final String rootPath = System.getProperty("user.dir");
-	static final String address = rootPath + "contentsDB.txt";
+	static final String NoticeBoard = rootPath + "contentsDB.txt";
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
 		
+		boolean LoginVaild = true;
 		while(true) {
 		System.out.println();
 		System.out.println("        UU  UU                            AAAAA          ");
@@ -98,11 +106,29 @@ public class EungAe {
 			
 			switch(select) {
 			case 1:
-				System.out.println("    --------------------------------------------------------------------------------");
-				System.out.println("    ㅣ <응애응애>는 임신/출산/육아 생애 주기 별, 필요한 의료/경제/사회복지 서비스를 안내해주는 서비스입니다. ㅣ");
-				System.out.println("    | 저희 안내 서비스는 거주지 기준 관할 보건소를 바탕으로 제공합니다.                             |");
-				System.out.println("    | 지역 별 전화번호 메뉴를 반드시 참고하여 주세요!!                                         |");
-				System.out.println("    --------------------------------------------------------------------------------");
+				ArrayList<String> N_list = new ArrayList<String>(); // 리스트 선언
+
+				File note = new File("C:/Users/user/Desktop/textfile/guide.txt");
+						try{
+						        BufferedReader br = new BufferedReader(new FileReader(note));
+						        String str = br.readLine();
+				                while(str != null){
+				                	N_list.add(str); //ArrayList에 저장
+				                	str = br.readLine();
+				                }
+
+						        br.close();
+						} catch (NullPointerException e){ // null이 있을 경우
+							e.getStackTrace();
+						} catch (FileNotFoundException e){ // 파일을 찾을 수 없는 경우
+							e.getStackTrace();
+						} catch (IOException e){ // 파일 읽기 중 에러가 발생한 경우
+							e.getStackTrace();
+						}
+				        
+				        for(int i = 0; i < N_list.size(); i++){ // 저장된 Array의 크기만큼 루프
+							System.out.println(N_list.get(i)); // 순서대로 출력
+						}
 				break;
 			case 2:
 					System.out.println("    현재 생애 주기를 선택하여 주십시오.");
@@ -116,31 +142,54 @@ public class EungAe {
 					
 					if(Menu_num1 == 1) {
 						if(Menu_num2 == 1) {
-							System.out.println();
-							System.out.println("    <1. 임신 및 출산 의료비 지원>");
-							System.out.println("    - 임신 바우처 기존 60만원 -> 100만원으로 인상");
-							System.out.println("    - 다자녀: 140만원 / 청소년 산모: 120만원 지원 가능");
+							ArrayList<String> N_list1 = new ArrayList<String>(); // 리스트 선언
+
+							File note1 = new File("C:/Users/user/Desktop/textfile/p_e.txt");
+									try{
+									        BufferedReader br = new BufferedReader(new FileReader(note1));
+									        String str = br.readLine();
+							                while(str != null){
+							                	N_list1.add(str); //ArrayList에 저장
+							                	str = br.readLine();
+							                }
+
+									        br.close();
+									} catch (NullPointerException e){ // null이 있을 경우
+										e.getStackTrace();
+									} catch (FileNotFoundException e){ // 파일을 찾을 수 없는 경우
+										e.getStackTrace();
+									} catch (IOException e){ // 파일 읽기 중 에러가 발생한 경우
+										e.getStackTrace();
+									}
+							        
+							        for(int i = 0; i < N_list1.size(); i++){ // 저장된 Array의 크기만큼 루프
+										System.out.println(N_list1.get(i)); // 순서대로 출력
+									}
 							break;
 						}else if(Menu_num2 == 2) {
-							System.out.println();
-							System.out.println("    <1. 엽산, 철분제 지원>");
-							System.out.println("    - 지자체별 지원 내용이 다르므로 보건소 문의 부탁드립니다.");
-							System.out.println("    - 조건: 보건소에 등록된 임산부");
-							System.out.println("    - ~임신 12주 : 엽산제 / 임신 16주 ~ 분만 : 철분제 지원");
-							System.out.println();
-							System.out.println("    <2. 임신 전 건강검진, 산전 검사 보건소 이용");
-							System.out.println("    - 조건: 예비 부부 혹은 임신 계호기 부부");
-							System.out.println("    - 내용: 풍진항체검사, 성병에이즈 검사, 소변검사, 혈액검사, 초음파, 간염, 빈혈, 기형아, 임신성 당뇨");
-							System.out.println("    - 무료 혹은 저렴한 가격으로 이용 가능 ");
-							System.out.println("    - 신청: 관할 보건소");
-							System.out.println();
-							System.out.println("    <3. 난임시술 의료비 지원>");
-							System.out.println("    - 조건: 부인 연령 만 44세 이하 / 법절 혼인상태 부부가 난임진단서를 끊었을 때 가능.");
-							System.out.println("    - 내용: 체외 수정 시술 최대 4회 / 100~300만원 이내");
-							System.out.println("    -      인공수정 시술 회당 50만원 / 한도 3회");
-							System.out.println("    -      동결배아 체외수정 회당 30~100만원");
-							System.out.println("    - 신청: 부인의 주민등록 상 주소지의 관할 보건소");
-							System.out.println("    - 유의: 소득기준없이 모든 난임부부에게 지원되나, 소득수준에 따라 '차등지급'함.");
+							ArrayList<String> N_list2 = new ArrayList<String>(); // 리스트 선언
+
+							File note2 = new File("C:/Users/user/Desktop/textfile/p_m.txt");
+									try{
+									        BufferedReader br = new BufferedReader(new FileReader(note2));
+									        String str = br.readLine();
+							                while(str != null){
+							                	N_list2.add(str); //ArrayList에 저장
+							                	str = br.readLine();
+							                }
+
+									        br.close();
+									} catch (NullPointerException e){ // null이 있을 경우
+										e.getStackTrace();
+									} catch (FileNotFoundException e){ // 파일을 찾을 수 없는 경우
+										e.getStackTrace();
+									} catch (IOException e){ // 파일 읽기 중 에러가 발생한 경우
+										e.getStackTrace();
+									}
+							        
+							        for(int i = 0; i < N_list2.size(); i++){ // 저장된 Array의 크기만큼 루프
+										System.out.println(N_list2.get(i)); // 순서대로 출력
+									}
 							break;
 						}else if(Menu_num2 == 3) {
 							System.out.println("    <1. 출산 교실과 용품 지원>");
@@ -207,22 +256,22 @@ public class EungAe {
 				break;
 			}
 			case 4:{
-				
+				break;
 			}
 			case 5:{
-				
+				break;
 			}
 			case 6:{ //게시판 기능 
 				List<PersonInfo> person = new ArrayList<>();
 				readTxt(person); //텍스트 파일 읽기
 				run(person);
-				
+				break;
 			}
 			case 7:{
-				
+				break;
 			}
 			case 8:{
-				
+				break;
 			}
 			
 			}
@@ -299,13 +348,15 @@ public class EungAe {
 		boolean runx = true;
 		int num = 0;
 		String serchstr = "";
+		
 		System.out.println("*******************************");
 		System.out.println("*          게   시   판         *");
 		System.out.println("*******************************");
+		
 		while(runx) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("1.리스트  2. 등록  3. 삭제  4. 검색  5. 종료");
-			System.out.println("-----------------------------------------");
+			System.out.println("----------------------------------------");
 			System.out.print("메뉴 번호 >>> ");
 			num = sc.nextInt();
 			
@@ -326,24 +377,30 @@ public class EungAe {
 				System.out.println("<3. 삭제>");
 				System.out.print("번호 >>> ");
 				delete(sc, person);
+				break;
 			case 4:
 				System.out.println();
 				System.out.println("<4. 검색>");
 				System.out.print("이름 >>> ");
 				search(person, serchstr);
 				System.out.println();
+				break;
 			case 5:
 				System.out.println();
 				System.out.println("*****************************");
 				System.out.println("*          감사합니다          *");
 				System.out.println("*****************************");
+				runx = false;
+				break;
 			default:
 				System.out.println("[다시 입력해 주세요]");
 				System.out.println();
+				break;
 			}
 			
 		}
 	}
+		//이름에서 단어를 포함하는 검색 기능
 		private static void search(List<PersonInfo> person, String str) {
 			for(int i = 0; i < person.size(); i++) {
 				PersonInfo searchperson = (PersonInfo) person.get(i);
@@ -352,6 +409,8 @@ public class EungAe {
 				}
 			}
 		}
+		
+		//삭제 기능
 		private static void delete(Scanner sc, List<PersonInfo> person) {
 			int del = sc.nextInt();
 			person.remove(del-1);
@@ -360,11 +419,15 @@ public class EungAe {
 			wirteTxt(person);
 			System.out.println("[삭제되었습니다.]");
 		}
+		
+		//리스트 보여주기 기능
 		private static void showinfo(List<PersonInfo> person) {
 			for(int i = 0; i < person.size(); i++) {
 				System.out.println(person.get(i).toString());
 			}
 		}
+		
+		//추가하기 기능
 		private static void add(Scanner sc, List<PersonInfo> person) {
 			String name;
 			String sex;
@@ -381,6 +444,8 @@ public class EungAe {
 			wirteTxt(person);
 			System.out.println("[등록되었습니다.]");
 		}
+		
+		//업데이트 기능
 		private static void update(List<PersonInfo> person) {
 			for(int i = 0; i < person.size(); i++) {
 				PersonInfo n = (PersonInfo) person.get(i);
@@ -391,7 +456,7 @@ public class EungAe {
 			Reader fr = null;
 			BufferedReader br = null;
 			try {
-				fr = new FileReader(address);
+				fr = new FileReader(NoticeBoard);
 				br = new BufferedReader(fr);
 				String line = "";
 				String[] words = new String[3];
@@ -415,7 +480,7 @@ public class EungAe {
 			Writer fw = null;
 			BufferedWriter bw = null;
 			try {
-				fw = new FileWriter(address);
+				fw = new FileWriter(NoticeBoard);
 				bw = new BufferedWriter(fw);
 				
 				for(int i = 0; i < person.size(); i++) {
