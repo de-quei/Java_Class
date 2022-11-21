@@ -28,9 +28,9 @@ class Account1 {
 	public String toString() {
 		return "계좌번호 : " + acc_num + ", 현재잔액 : " + balance+"원";
 	}
-	void fixedDeposit(int year, int money1) {
+	void fixedDeposit(int year, int amount_M) {
 		System.out.println("========================");
-		int principle = money1 * 12 * year; //원금
+		int principle = amount_M * 12 * year; //원금
 		double res =  principle + (principle * (year * interest)) ;
 		System.out.println("이자 : " + res + "원");
 	}
